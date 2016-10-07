@@ -2,7 +2,6 @@
 //一款将电子文本转化为中文手写笔迹图片的开源免费软件。。
 //基于命令行界面,通过引入随机性来模仿人类(特别是本人)手写.
 
-//TODO:用java8新特性重写代码。
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -116,9 +115,7 @@ public final class Framework {
 					+ "生成图片（格式："+outputFormatName+"）："+index+"张\n"
 					+ "输出文件夹:"+outputPath+"\n");
 			
-		} catch (IOException e) {
-			System.out.print(e.toString());
-		} catch (NumberFormatException e){
+		} catch (IOException|NumberFormatException e){
 			System.out.print(e.toString());
 		}
 

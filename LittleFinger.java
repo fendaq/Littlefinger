@@ -1,6 +1,7 @@
 //核心算法及其所调用的函数.
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -12,6 +13,7 @@ import static java.lang.Math.log;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.round;
 
+//TODO:使用java.util.Random代替Math.random()和normsDists()。
 public final class LittleFinger {
 
 	//write方法尽量模仿在人类(特别是本人)手写时的字与字之间的关系.
@@ -92,7 +94,6 @@ public final class LittleFinger {
 		return article;
 	}
 	
-	//拷贝BufferedImage,而不是共享数据.
 	private final static BufferedImage deepCopy(final BufferedImage origin) {
 	    BufferedImage clone = new BufferedImage(origin.getWidth(),
 	            origin.getHeight(), 
