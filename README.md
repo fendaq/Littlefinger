@@ -15,7 +15,7 @@ LittleFinger，一款将电子文本转化为中文手写笔迹的图片的开�
 
 ******************************************<br>
 <br>
-文件夹default和template1均为存放各自模板信息的文件夹。配置文件setting.properties中须包含程序运行时所必须参数。模板文件夹存放于文件夹template内<br>
+文件夹default和template1均为存放各自模板信息的文件夹。模板文件夹存放于文件夹template内。<br>
 <br>
 注：配置文件与待处理文本文件均需用UTF-8格式编码。<br>
 ##核心算法
