@@ -33,7 +33,7 @@ public final class Framework {
 		final String textPath=args[1];
 		final String outputPath=args[2];
 		
-		final String templatePropPath=templatePath+"/setting.properties";
+		final String templatePropPath=templatePath+"/template.properties";
 		Properties prop=new Properties();
 		try {
 			BufferedReader inputProp=new BufferedReader(
