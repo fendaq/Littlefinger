@@ -1,7 +1,6 @@
 //核心算法及其所调用的函数.
 
 import java.util.LinkedList;
-import java.util.Random;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
