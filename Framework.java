@@ -18,7 +18,7 @@ import java.awt.Font;
 public final class Framework {
 	final static String VERSION="1.0";
 	
-	 // @param args:templatePath textPath outputPath
+	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
 		final long beginTime=System.currentTimeMillis();
 		
@@ -26,12 +26,12 @@ public final class Framework {
 			giveHints();
 			return;
 		}
-		
-		final String templatePath=args[0];
+		final String programFolder=getProgramFolder();
+		final String templatePath=programFolder+"template"+File.separator+args[0];
 		final String textPath=args[1];
 		final String outputPath=args[2];
 		
-		final String templatePropPath=templatePath+"/template.properties";
+		final String templatePropPath=templatePath+File.separator+"template.properties";
 		Properties prop=new Properties();
 		
 		BufferedReader inputProp=new BufferedReader(
@@ -51,9 +51,9 @@ public final class Framework {
 		final int     fontSize           = Integer.parseInt(prop.getProperty("fontSize"));
 		final int     wordSpace          = Integer.parseInt(prop.getProperty("wordSpace"));
 		final int     lineSpace          = Integer.parseInt(prop.getProperty("lineSpace"));
-		final double  fontSizeVariance   = Double.parseDouble(prop.getProperty("fontSizeVariance"));
-		final double  wordSpaceVariance  = Double.parseDouble(prop.getProperty("wordSpaceVariance"));
-		final double  lineSpaceVariance  = Double.parseDouble(prop.getProperty("lineSpaceVariance"));
+		final double  fontSizedeviation   = Double.parseDouble(prop.getProperty("fontSizedeviation"));
+		final double  wordSpacedeviation  = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
+		final double  lineSpacedeviation  = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
 		final String  backgroundFileName = prop.getProperty("backgroundFileName");
 		final String  outputFormatName   = prop.getProperty("outputFormatName");       
 		
@@ -64,7 +64,7 @@ public final class Framework {
 		final Color color=new Color(rgbR,rgbG,rgbB);
 
 	    final BufferedImage background = ImageIO.read(
-	    		new File(templatePath+"/"+backgroundFileName));  
+	    		new File(templatePath+File.separator+backgroundFileName));  
 	    
 		if((topMargin+bottomMargin+fontSize) >= background.getHeight()){
 	    	System.out.print("topMargin,bottomMargin与fontSize之和须小于背景图高度!\n");
@@ -97,9 +97,9 @@ public final class Framework {
 				bottomMargin,
 				leftMargin,
 				rightMargin,
-				fontSizeVariance,
-				wordSpaceVariance,
-				lineSpaceVariance);
+				fontSizedeviation,
+				wordSpacedeviation,
+				lineSpacedeviation);
 		
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
@@ -117,13 +117,21 @@ public final class Framework {
 
 	}
 	
+	final static String getProgramFolder(){
+		final String classPath=System.getProperty("java.class.path");
+		final int index=classPath.lastIndexOf(File.separatorChar);
+		if(index==-1)
+			return "";
+		return classPath.substring(0, index+1);
+	}
+	
 	final static void giveHints(){
 		System.out.print("\n"
 				+ "LittleFinger[版本："+VERSION+"]\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
 				+ "\n"
-				+ "用法：LittleFinger.jar templatePath textPath outputPath\n"
-				+ "\ttemplatePath\t模板路径\n"
+				+ "用法：LittleFinger.jar template textPath outputPath\n"
+				+ "\ttemplate\t模板名称\n"
 				+ "\ttextPath\t待处理文本文件路径\n"
 				+ "\toutputPath\t生成图片输出路径\n"
 				+ "\n"

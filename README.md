@@ -6,14 +6,15 @@ LittleFinger，一款将电子文本转化为中文手写笔迹的图片的开�
 <br>
 ****************************************<br>
 * LittleFinger.jar<br>
-* default<br>
-	* template.properties<br>
-	* background.png<br>
-* template1<br>
-	* template.properties<br>
-	* background.jpg<br>
+* template
+	* default<br>
+		* template.properties<br>
+		* background.png<br>
+	* template1<br>
+		* template.properties<br>
+		* background.jpg<br>
 
-******************************************<br>
+****************************************<br>
 <br>
 文件夹default和template1均为存放各自模板信息的文件夹。模板文件夹存放于文件夹template内。<br>
 <br>

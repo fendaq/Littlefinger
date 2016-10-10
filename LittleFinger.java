@@ -35,9 +35,9 @@ public final class LittleFinger {
 			final int bottomMargin,
 			final int leftMargin,
 			final int rightMargin,
-			final double fontSizeVariance,
-			final double wordSpaceVariance,
-			final double lineSpaceVariance){
+			final double fontSizedeviation,
+			final double wordSpacedeviation,
+			final double lineSpacedeviation){
 		
 		Random random=new Random();
 		final int fontSize=font.getSize();	
@@ -71,7 +71,7 @@ public final class LittleFinger {
 						break;
 					}		
 					
-					realFontSize=fontSize+(int)(fontSizeVariance*random.nextGaussian());
+					realFontSize=fontSize+(int)(fontSizedeviation*random.nextGaussian());
 					//斜体的概率为0.5
 					context.setFont(font.deriveFont( 
 									random.nextDouble()<0.5 ? fontStyle : fontStyle|Font.ITALIC, 
@@ -79,11 +79,11 @@ public final class LittleFinger {
 
 					context.drawString(String.valueOf(word), 
 							x,
-							y+(int)(lineSpaceVariance*random.nextGaussian()));
+							y+(int)(lineSpacedeviation*random.nextGaussian()));
 					++i;
 					
 					x+=realFontSize
-						+wordSpace+(int)(wordSpaceVariance*random.nextGaussian())
+						+wordSpace+(int)(wordSpacedeviation*random.nextGaussian())
 						-(isHalfChar(text[i-1]) ? fontSize/2 : 0);		
 				}
 			}
