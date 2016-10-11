@@ -16,7 +16,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 public final class Framework {
-	final static String VERSION="1.0";
+	final static String VERSION="1.1";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
