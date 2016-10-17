@@ -63,9 +63,9 @@ public final class Framework {
 		final int     fontSize           = Integer.parseInt(prop.getProperty("fontSize"));
 		final int     wordSpace          = Integer.parseInt(prop.getProperty("wordSpace"));
 		final int     lineSpace          = Integer.parseInt(prop.getProperty("lineSpace"));
-		final double  fontSizedeviation   = Double.parseDouble(prop.getProperty("fontSizedeviation"));
-		final double  wordSpacedeviation  = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
-		final double  lineSpacedeviation  = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
+		final double  fontSizedeviation  = Double.parseDouble(prop.getProperty("fontSizedeviation"));
+		final double  wordSpacedeviation = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
+		final double  lineSpacedeviation = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
 		final String  backgroundFileName = prop.getProperty("backgroundFileName");
 		final String  outputFormatName   = prop.getProperty("outputFormatName");       
 		
