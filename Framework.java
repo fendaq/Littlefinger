@@ -1,6 +1,18 @@
-//LittleFinger
-//一款将电子文本转化为中文手写笔迹图片的开源免费软件。。
-//基于命令行界面,通过引入随机性来模仿人类(特别是本人)手写.
+//LittleFinger：一款将电子文本转化为中文手写笔迹图片的开源免费软件。
+//Copyright (C) 2016  Gsllchb <Gsllchb@icloud.com>
+//
+//This program is free software: you can redistribute it and/or modify
+//it under the terms of the GNU General Public License as published by
+//the Free Software Foundation, either version 3 of the License, or
+//(at your option) any later version.
+//
+//This program is distributed in the hope that it will be useful,
+//but WITHOUT ANY WARRANTY; without even the implied warranty of
+//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//GNU General Public License for more details.
+//
+//You should have received a copy of the GNU General Public License
+//along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,9 +63,9 @@ public final class Framework {
 		final int     fontSize           = Integer.parseInt(prop.getProperty("fontSize"));
 		final int     wordSpace          = Integer.parseInt(prop.getProperty("wordSpace"));
 		final int     lineSpace          = Integer.parseInt(prop.getProperty("lineSpace"));
-		final double  fontSizedeviation   = Double.parseDouble(prop.getProperty("fontSizedeviation"));
-		final double  wordSpacedeviation  = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
-		final double  lineSpacedeviation  = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
+		final double  fontSizedeviation  = Double.parseDouble(prop.getProperty("fontSizedeviation"));
+		final double  wordSpacedeviation = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
+		final double  lineSpacedeviation = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
 		final String  backgroundFileName = prop.getProperty("backgroundFileName");
 		final String  outputFormatName   = prop.getProperty("outputFormatName");       
 		

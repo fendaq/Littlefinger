@@ -1,3 +1,19 @@
+//LittleFinger：一款将电子文本转化为中文手写笔迹图片的开源免费软件。
+//Copyright (C) 2016  Gsllchb <Gsllchb@icloud.com>
+//
+//This program is free software: you can redistribute it and/or modify
+//it under the terms of the GNU General Public License as published by
+//the Free Software Foundation, either version 3 of the License, or
+//(at your option) any later version.
+//
+//This program is distributed in the hope that it will be useful,
+//but WITHOUT ANY WARRANTY; without even the implied warranty of
+//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//GNU General Public License for more details.
+//
+//You should have received a copy of the GNU General Public License
+//along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 //核心算法及其所调用的函数.
 
 import java.util.LinkedList;
