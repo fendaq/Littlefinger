@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 public final class Framework {
-	final static String VERSION="1.1";
+	private final static String VERSION="1.1";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
@@ -100,7 +100,7 @@ public final class Framework {
 		
 		final List<BufferedImage> article=LittleFinger.write(
 				background,
-				text.toCharArray(),
+				preprocess(text),
 				font,
 				color,
 				wordSpace,
@@ -111,7 +111,9 @@ public final class Framework {
 				rightMargin,
 				fontSizedeviation,
 				wordSpacedeviation,
-				lineSpacedeviation);
+				lineSpacedeviation,
+				Framework::isHalfChar,
+				Framework::isEndChar);
 		
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
@@ -129,7 +131,7 @@ public final class Framework {
 
 	}
 	
-	final static String getProgramFolder(){
+	private final static String getProgramFolder(){
 		final String classPath=System.getProperty("java.class.path");
 		final int index=classPath.lastIndexOf(File.separatorChar);
 		if(index==-1)
@@ -137,7 +139,7 @@ public final class Framework {
 		return classPath.substring(0, index+1);
 	}
 	
-	final static void giveHints(){
+	private final static void giveHints(){
 		System.out.print("\n"
 				+ "LittleFinger[版本："+VERSION+"]\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
@@ -149,5 +151,116 @@ public final class Framework {
 				+ "\n"
 				+ "更多信息：https://github.com/Gsllchb/LittleFinger\n"
 				+ "\n");
+	}
+	
+	private final static String preprocess(String text){
+		char[] chars=text.toCharArray();
+		for(int i=0; i<chars.length; ++i){
+			switch(chars[i]){
+			case '（':
+				chars[i]='(';
+				break;
+			case '）':
+				chars[i]=')';
+				break;
+			case '【':
+				chars[i]='[';
+				break;
+			case '】':
+				chars[i]=']';
+				break;
+			case '，':
+				chars[i]=',';
+				break;
+			case '！':
+				chars[i]='!';
+				break;
+			case '？':
+				chars[i]='?';
+				break;
+			case '“':
+				chars[i]='"';
+				break;
+			case '”':
+				chars[i]='"';
+				break;
+			case '‘':
+				chars[i]='\'';
+				break;
+			case '’':
+				chars[i]='\'';
+				break;
+			case '：':
+				chars[i]=':';
+				break;
+			case '；':
+				chars[i]=';';
+				break;
+			}
+		}
+		return new String(chars);
+	}
+	
+	private final static boolean isHalfChar(final char c){
+		//所有英文字母和阿拉伯数字
+		if(c>='0' && c<='9') return true;
+		if(c>='a' && c<='z') return true;
+		if(c>='A' && c<='Z') return true;
+		if(c>='α' && c<='ω') return true;
+		if(c>='Α' && c<='Ω') return true;
+		//英文标点
+		switch(c){
+		case ' ':
+		case '~':
+		case '`':
+		case '!':
+		case '@':
+		case '#':
+		case '$': case '￥':
+		case '%':
+		case '^':
+		case '&':
+		case '(': case ')':
+		case '+': case '-': case '*': case '/':
+		case '_':
+		case '=':
+		case '[': case ']':
+		case '{': case '}':
+		case '|':
+		case '\\':
+		case ':':
+		case ';':
+		case '"':
+		case '\'':
+		case '<': case '>':
+		case ',':
+		case '.':
+		case '?':
+		case '°': case '′': case '″':
+		case '·': case '、': case '。':
+			return true;
+		}
+		return false;
+	}
+	
+	private final static boolean isEndChar(final char c){
+		switch(c){
+		case ',':
+		case ';':
+		case '.':
+		case '。':
+		case ')':
+		case ']':
+		case '}':
+		case '>':
+		case '》':
+		case '!':
+		case '?':
+		case '、':
+		case '°': case '′': case '″':
+		case '℃': case '℉':
+			return true;		
+		}
+		return false;
 	}
 }
