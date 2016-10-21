@@ -89,18 +89,20 @@ public final class Framework {
 	    
 		BufferedReader inputText=new BufferedReader(
 				new InputStreamReader(new FileInputStream(textPath),"UTF-8"));
-		String text="";
+		StringBuilder text=new StringBuilder();
 		String line;
-		while((line=inputText.readLine())!=null){
-			text=text+line+"\n";
+		while((line=inputText.readLine()) != null){
+			text.append(line).append('\n');
 		}		
 		inputText.close();
+		
+		preprocess(text);
 		
 		final Font font=new Font(fontFamily,useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
 		final List<BufferedImage> article=LittleFinger.write(
 				background,
-				preprocess(text),
+				text,
 				font,
 				color,
 				wordSpace,
@@ -153,52 +155,35 @@ public final class Framework {
 				+ "\n");
 	}
 	
-	private final static String preprocess(String text){
-		char[] chars=text.toCharArray();
-		for(int i=0; i<chars.length; ++i){
-			switch(chars[i]){
+	private final static void preprocess(StringBuilder text){
+		for(int i=0; i<text.length(); ++i){
+			switch(text.charAt(i)){
 			case '£¨':
-				chars[i]='(';
-				break;
+				text.setCharAt(i, '('); break;
 			case '£©':
-				chars[i]=')';
-				break;
+				text.setCharAt(i, ')'); break;
 			case '¡¾':
-				chars[i]='[';
-				break;
+				text.setCharAt(i, '['); break;
 			case '¡¿':
-				chars[i]=']';
-				break;
+				text.setCharAt(i, ']'); break;
 			case '£¬':
-				chars[i]=',';
-				break;
+				text.setCharAt(i, ','); break;
 			case '£¡':
-				chars[i]='!';
-				break;
+				text.setCharAt(i, '!'); break;
 			case '£¿':
-				chars[i]='?';
-				break;
+				text.setCharAt(i, '?'); break;
 			case '¡°':
-				chars[i]='"';
-				break;
 			case '¡±':
-				chars[i]='"';
-				break;
+				text.setCharAt(i, '"'); break;
 			case '¡®':
-				chars[i]='\'';
-				break;
 			case '¡¯':
-				chars[i]='\'';
-				break;
+				text.setCharAt(i, '\''); break;
 			case '£º':
-				chars[i]=':';
-				break;
+				text.setCharAt(i, ':'); break;
 			case '£»':
-				chars[i]=';';
-				break;
+				text.setCharAt(i, ';'); break;
 			}
 		}
-		return new String(chars);
 	}
 	
 	private final static boolean isHalfChar(final char c){
