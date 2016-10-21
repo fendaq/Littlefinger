@@ -44,7 +44,7 @@ public final class LittleFinger {
 	//4.字体的坐标为字体左下角顶点的坐标。
 	public final static LinkedList<BufferedImage> write(
 			final BufferedImage background,
-			final String text,
+			final CharSequence text,
 			final Font font,
 			final Color color,
 			final int wordSpace,
@@ -56,8 +56,8 @@ public final class LittleFinger {
 			final double fontSizedeviation,
 			final double wordSpacedeviation,
 			final double lineSpacedeviation,
-			Predicate<Character> isHalfChar,
-			Predicate<Character> isEndChar){
+			final Predicate<Character> isHalfChar,
+			final Predicate<Character> isEndChar){
 		
 		Random random=new Random();
 		final int fontSize=font.getSize();	
