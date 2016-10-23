@@ -120,7 +120,7 @@ public final class Framework {
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
 		int index=0;
-		for(BufferedImage page:article){
+		for(BufferedImage page : article){
 			ImageIO.write(page, outputFormatName, new File(outputPath,(++index)+"."+outputFormatName));
 		}
 		
