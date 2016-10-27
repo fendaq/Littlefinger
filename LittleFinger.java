@@ -17,7 +17,9 @@
 //核心算法及其所调用的函数.
 
 import java.util.LinkedList;
+
 import java.util.Random;
+import java.util.function.Predicate;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -42,7 +44,7 @@ public final class LittleFinger {
 	//4.字体的坐标为字体左下角顶点的坐标。
 	public final static LinkedList<BufferedImage> write(
 			final BufferedImage background,
-			char[] text,
+			final CharSequence text,
 			final Font font,
 			final Color color,
 			final int wordSpace,
@@ -53,34 +55,36 @@ public final class LittleFinger {
 			final int rightMargin,
 			final double fontSizedeviation,
 			final double wordSpacedeviation,
-			final double lineSpacedeviation){
+			final double lineSpacedeviation,
+			final Predicate<Character> isHalfChar,
+			final Predicate<Character> isEndChar){
 		
 		Random random=new Random();
 		final int fontSize=font.getSize();	
 		final int fontStyle=font.getStyle();
+		final int length=text.length();
 		LinkedList<BufferedImage> article=new LinkedList<BufferedImage>();
 		
-		preprocess(text);
-		for(int i=0; i!=text.length; ){
+		for(int i=0; i!=length; ){
 			BufferedImage page=deepCopy(background);
 			Graphics2D context=page.createGraphics();
 			context.setColor(color);
 			
 			for(int y=topMargin+fontSize;
-				y<page.getHeight()-bottomMargin && i!=text.length;
+				y<page.getHeight()-bottomMargin && i!=length;
 				y+=lineSpace){
 				
 				for(int x=leftMargin,realFontSize; ;){			
-					final char word=text[i];
+					final char word=text.charAt(i);
 					
-					if(i==text.length){
+					if(i==length){
 						break;
 					//解决换行符恰好在行末时换行会多换一行的问题。
 					}else if(x>=page.getWidth()-rightMargin-fontSize && word=='\n'){
 						++i;
 						break;
 					//解决句号和逗号等一般不能放于行首的字符在自动换行时，写于行首。
-					}else if(x>=page.getWidth()-rightMargin-fontSize && !isEndChar(word)){
+					}else if(x>=page.getWidth()-rightMargin-fontSize && !isEndChar.test(word)){
 						break;
 					}else if(word=='\n'){
 						++i;
@@ -100,7 +104,7 @@ public final class LittleFinger {
 					
 					x+=realFontSize
 						+wordSpace+(int)(wordSpacedeviation*random.nextGaussian())
-						-(isHalfChar(text[i-1]) ? fontSize/2 : 0);		
+						-(isHalfChar.test(text.charAt(i-1)) ? fontSize/2 : 0);		
 				}
 			}
 			context.dispose();
@@ -119,117 +123,5 @@ public final class LittleFinger {
 	    g2d.dispose();
 	    return clone;
 	}
-
-	//判断传入字符是否占位过少（如：英文字母和数字），用于解决占位较少字符之间间距过大的不足。
-	private final static boolean isHalfChar(final char c){
-		//所有英文字母和阿拉伯数字
-		if(c>='0' && c<='9') return true;
-		if(c>='a' && c<='z') return true;
-		if(c>='A' && c<='Z') return true;
-		if(c>='α' && c<='ω') return true;
-		if(c>='Α' && c<='Ω') return true;
-		//英文标点
-		switch(c){
-		case ' ':
-		case '~':
-		case '`':
-		case '!':
-		case '@':
-		case '#':
-		case '$': case '￥':
-		case '%':
-		case '^':
-		case '&':
-		case '(': case ')':
-		case '+': case '-': case '*': case '/':
-		case '_':
-		case '=':
-		case '[': case ']':
-		case '{': case '}':
-		case '|':
-		case '\\':
-		case ':':
-		case ';':
-		case '"':
-		case '\'':
-		case '<': case '>':
-		case ',':
-		case '.':
-		case '?':
-		case '°': case '′': case '″':
-		case '·': case '、': case '。':
-			return true;
-		}
-		return false;
-	}
 	
-	//对待处理文本做必要的预处理。
-	//将中文中与英文差别不大的标点符号全部换成英文的标点。
-	private final static void preprocess(char[] text){
-		for(int i=0; i<text.length; ++i){
-			switch(text[i]){
-			case '（':
-				text[i]='(';
-				break;
-			case '）':
-				text[i]=')';
-				break;
-			case '【':
-				text[i]='[';
-				break;
-			case '】':
-				text[i]=']';
-				break;
-			case '，':
-				text[i]=',';
-				break;
-			case '！':
-				text[i]='!';
-				break;
-			case '？':
-				text[i]='?';
-				break;
-			case '“':
-				text[i]='"';
-				break;
-			case '”':
-				text[i]='"';
-				break;
-			case '‘':
-				text[i]='\'';
-				break;
-			case '’':
-				text[i]='\'';
-				break;
-			case '：':
-				text[i]=':';
-				break;
-			case '；':
-				text[i]=';';
-				break;
-			}
-		}
-	}
-	
-	//判断某个字符是否不能放于行首。
-	private final static boolean isEndChar(final char c){
-		switch(c){
-		case ',':
-		case ';':
-		case '.':
-		case '。':
-		case ')':
-		case ']':
-		case '}':
-		case '>':
-		case '》':
-		case '!':
-		case '?':
-		case '、':
-		case '°': case '′': case '″':
-		case '℃': case '℉':
-			return true;		
-		}
-		return false;
-	}
 }
