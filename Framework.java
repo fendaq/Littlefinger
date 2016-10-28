@@ -27,8 +27,10 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 
+import com.google.gson.*;
+
 public final class Framework {
-	private final static String VERSION="1.1";
+	private static final String VERSION="1.1";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
@@ -41,39 +43,38 @@ public final class Framework {
 		final String programFolder=getProgramFolder();
 		final String templatePath=programFolder+"template"+File.separator+args[0];
 		final String textPath=args[1];
-		final String outputPath=args[2];
-		
+		final String outputPath=args[2];		
 		final String templatePropPath=templatePath+File.separator+"template.properties";
-		Properties prop=new Properties();
 		
-		BufferedReader inputProp=new BufferedReader(
+		JsonParser jsonParser=new JsonParser();		
+		BufferedReader inputConf=new BufferedReader(
 				new InputStreamReader(new FileInputStream(templatePropPath),"UTF-8"));
-		prop.load(inputProp);
-		inputProp.close();
+		JsonObject conf=jsonParser.parse(inputConf).getAsJsonObject();
+		inputConf.close();
 		
-		final String  fontFamily         = prop.getProperty("fontFamily");
-		final int     rgbR               = Integer.parseInt(prop.getProperty("rgbR"));
-		final int     rgbG               = Integer.parseInt(prop.getProperty("rgbG"));
-		final int     rgbB               = Integer.parseInt(prop.getProperty("rgbB"));
-		final boolean useBold            = Boolean.parseBoolean(prop.getProperty("useBold"));
-		final int     topMargin          = Integer.parseInt(prop.getProperty("topMargin"));
-		final int     bottomMargin       = Integer.parseInt(prop.getProperty("bottomMargin"));
-		final int     leftMargin         = Integer.parseInt(prop.getProperty("leftMargin"));
-		final int     rightMargin        = Integer.parseInt(prop.getProperty("rightMargin"));
-		final int     fontSize           = Integer.parseInt(prop.getProperty("fontSize"));
-		final int     wordSpace          = Integer.parseInt(prop.getProperty("wordSpace"));
-		final int     lineSpace          = Integer.parseInt(prop.getProperty("lineSpace"));
-		final double  fontSizedeviation  = Double.parseDouble(prop.getProperty("fontSizedeviation"));
-		final double  wordSpacedeviation = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
-		final double  lineSpacedeviation = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
-		final String  backgroundFileName = prop.getProperty("backgroundFileName");
-		final String  outputFormatName   = prop.getProperty("outputFormatName");       
+		Gson gson = new Gson();
 		
-		if(rgbR<0 || rgbR>255 || rgbG<0 || rgbG>255 || rgbB<0 || rgbB>255){
-			System.out.print("RGB值均需在区间[0,255]内!");
-			return;
-		}
-		final Color color=new Color(rgbR,rgbG,rgbB);
+		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
+		final String    outputFormatName   = conf.get("outputFormatName").getAsString();
+		final String    fontFamily         = conf.get("fontFamily").getAsString(); 
+		final JsonArray rgb                = conf.get("rgbR").getAsJsonArray();
+		final boolean   useBold            = conf.get("useBold").getAsBoolean();
+		final int       topMargin          = conf.get("topMargin").getAsInt();
+		final int       bottomMargin       = conf.get("bottomMargin").getAsInt();
+		final int       leftMargin         = conf.get("leftMargin").getAsInt();
+		final int       rightMargin        = conf.get("rightMargin").getAsInt();
+		final int       fontSize           = conf.get("fontSize").getAsInt();
+		final int       wordSpace          = conf.get("wordSpace").getAsInt();
+		final int       lineSpace          = conf.get("lineSpace").getAsInt();
+		final double    fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
+		final double    wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
+		final double    lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
+		final char[]    halfChars          = gson.fromJson(conf.get("halfChars"), char[].class);
+		final char[]    endChars           = gson.fromJson(conf.get("endChars"), char[].class);
+		
+		final Color color=new Color(rgb.get(0).getAsInt(),
+				rgb.get(1).getAsInt(),
+				rgb.get(2).getAsInt());
 
 	    final BufferedImage background = ImageIO.read(
 	    		new File(templatePath+File.separator+backgroundFileName));  
@@ -133,7 +134,7 @@ public final class Framework {
 
 	}
 	
-	private final static String getProgramFolder(){
+	private static final String getProgramFolder(){
 		final String classPath=System.getProperty("java.class.path");
 		final int index=classPath.lastIndexOf(File.separatorChar);
 		if(index==-1)
@@ -141,7 +142,7 @@ public final class Framework {
 		return classPath.substring(0, index+1);
 	}
 	
-	private final static void giveHints(){
+	private static final void giveHints(){
 		System.out.print("\n"
 				+ "LittleFinger[版本："+VERSION+"]\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
@@ -155,7 +156,7 @@ public final class Framework {
 				+ "\n");
 	}
 	
-	private final static void preprocess(StringBuilder text){
+	private static final void preprocess(StringBuilder text){
 		for(int i=0; i<text.length(); ++i){
 			switch(text.charAt(i)){
 			case '（':
@@ -186,7 +187,7 @@ public final class Framework {
 		}
 	}
 	
-	private final static boolean isHalfChar(final char c){
+	private static final boolean isHalfChar(final char c){
 		//所有英文字母和阿拉伯数字
 		if(c>='0' && c<='9') return true;
 		if(c>='a' && c<='z') return true;
@@ -228,7 +229,7 @@ public final class Framework {
 		return false;
 	}
 	
-	private final static boolean isEndChar(final char c){
+	private static final boolean isEndChar(final char c){
 		switch(c){
 		case ',':
 		case ';':
