@@ -49,7 +49,7 @@ public final class Framework {
 		final String templatePath=programFolder+"template"+File.separator+args[0];
 		final String textPath=args[1];
 		final String outputPath=args[2];		
-		final String templatePropPath=templatePath+File.separator+"template.properties";
+		final String templatePropPath=templatePath+File.separator+"template.json";
 		
 		JsonParser jsonParser=new JsonParser();		
 		BufferedReader inputConf=new BufferedReader(
@@ -60,7 +60,7 @@ public final class Framework {
 		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
 		final String    outputFormatName   = conf.get("outputFormatName").getAsString();
 		final String    fontFamily         = conf.get("fontFamily").getAsString(); 
-		final JsonArray rgb                = conf.get("rgbR").getAsJsonArray();
+		final JsonArray rgb                = conf.get("rgb").getAsJsonArray();
 		final boolean   useBold            = conf.get("useBold").getAsBoolean();
 		final int       topMargin          = conf.get("topMargin").getAsInt();
 		final int       bottomMargin       = conf.get("bottomMargin").getAsInt();
