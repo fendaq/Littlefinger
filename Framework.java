@@ -18,17 +18,24 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
+import java.lang.reflect.Type;
+
 import javax.imageio.ImageIO;
 
-import java.util.Properties;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 
+import com.google.gson.*;
+import com.google.gson.reflect.*;
+
 public final class Framework {
-	private final static String VERSION="1.1";
+	private static final String VERSION="1.1";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
@@ -41,39 +48,40 @@ public final class Framework {
 		final String programFolder=getProgramFolder();
 		final String templatePath=programFolder+"template"+File.separator+args[0];
 		final String textPath=args[1];
-		final String outputPath=args[2];
+		final String outputPath=args[2];		
+		final String templatePropPath=templatePath+File.separator+"template.json";
 		
-		final String templatePropPath=templatePath+File.separator+"template.properties";
-		Properties prop=new Properties();
-		
-		BufferedReader inputProp=new BufferedReader(
+		JsonParser jsonParser=new JsonParser();		
+		BufferedReader inputConf=new BufferedReader(
 				new InputStreamReader(new FileInputStream(templatePropPath),"UTF-8"));
-		prop.load(inputProp);
-		inputProp.close();
+		JsonObject conf=jsonParser.parse(inputConf).getAsJsonObject();
+		inputConf.close();
 		
-		final String  fontFamily         = prop.getProperty("fontFamily");
-		final int     rgbR               = Integer.parseInt(prop.getProperty("rgbR"));
-		final int     rgbG               = Integer.parseInt(prop.getProperty("rgbG"));
-		final int     rgbB               = Integer.parseInt(prop.getProperty("rgbB"));
-		final boolean useBold            = Boolean.parseBoolean(prop.getProperty("useBold"));
-		final int     topMargin          = Integer.parseInt(prop.getProperty("topMargin"));
-		final int     bottomMargin       = Integer.parseInt(prop.getProperty("bottomMargin"));
-		final int     leftMargin         = Integer.parseInt(prop.getProperty("leftMargin"));
-		final int     rightMargin        = Integer.parseInt(prop.getProperty("rightMargin"));
-		final int     fontSize           = Integer.parseInt(prop.getProperty("fontSize"));
-		final int     wordSpace          = Integer.parseInt(prop.getProperty("wordSpace"));
-		final int     lineSpace          = Integer.parseInt(prop.getProperty("lineSpace"));
-		final double  fontSizedeviation  = Double.parseDouble(prop.getProperty("fontSizedeviation"));
-		final double  wordSpacedeviation = Double.parseDouble(prop.getProperty("wordSpacedeviation"));
-		final double  lineSpacedeviation = Double.parseDouble(prop.getProperty("lineSpacedeviation"));
-		final String  backgroundFileName = prop.getProperty("backgroundFileName");
-		final String  outputFormatName   = prop.getProperty("outputFormatName");       
+		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
+		final String    outputFormatName   = conf.get("outputFormatName").getAsString();
+		final String    fontFamily         = conf.get("fontFamily").getAsString(); 
+		final JsonArray rgb                = conf.get("rgb").getAsJsonArray();
+		final boolean   useBold            = conf.get("useBold").getAsBoolean();
+		final int       topMargin          = conf.get("topMargin").getAsInt();
+		final int       bottomMargin       = conf.get("bottomMargin").getAsInt();
+		final int       leftMargin         = conf.get("leftMargin").getAsInt();
+		final int       rightMargin        = conf.get("rightMargin").getAsInt();
+		final int       fontSize           = conf.get("fontSize").getAsInt();
+		final int       wordSpace          = conf.get("wordSpace").getAsInt();
+		final int       lineSpace          = conf.get("lineSpace").getAsInt();
+		final double    fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
+		final double    wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
+		final double    lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
+		final Pattern   halfChars          = Pattern.compile(conf.get("halfChars").getAsString());
+		final Pattern   endChars           = Pattern.compile(conf.get("endChars").getAsString());
 		
-		if(rgbR<0 || rgbR>255 || rgbG<0 || rgbG>255 || rgbB<0 || rgbB>255){
-			System.out.print("RGB值均需在区间[0,255]内!");
-			return;
-		}
-		final Color color=new Color(rgbR,rgbG,rgbB);
+		Gson gson=new Gson();
+		final Type type = new TypeToken<Map<String, String>>(){}.getType();
+		final Map<Character, Character> swapMap = gson.fromJson(conf.get("swapMap"), type);
+		
+		final Color color=new Color(rgb.get(0).getAsInt(),
+				rgb.get(1).getAsInt(),
+				rgb.get(2).getAsInt());
 
 	    final BufferedImage background = ImageIO.read(
 	    		new File(templatePath+File.separator+backgroundFileName));  
@@ -91,12 +99,16 @@ public final class Framework {
 				new InputStreamReader(new FileInputStream(textPath),"UTF-8"));
 		StringBuilder text=new StringBuilder();
 		String line;
-		while((line=inputText.readLine()) != null){
-			text.append(line).append('\n');
-		}		
+		while((line=inputText.readLine()) != null)
+			text.append(line).append('\n');	
 		inputText.close();
 		
-		preprocess(text);
+		//对字符序列进行预处理
+		for(int i=0; i<text.length(); ++i){
+			char c=text.charAt(i);
+			if(swapMap.containsKey(c))
+				text.setCharAt(i, swapMap.get(c));
+		}
 		
 		final Font font=new Font(fontFamily,useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
@@ -114,13 +126,13 @@ public final class Framework {
 				fontSizedeviation,
 				wordSpacedeviation,
 				lineSpacedeviation,
-				Framework::isHalfChar,
-				Framework::isEndChar);
+				(c)->halfChars.matcher(c.toString()).matches(),
+				(c)->endChars.matcher(c.toString()).matches());
 		
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
 		int index=0;
-		for(BufferedImage page:article){
+		for(BufferedImage page : article){
 			ImageIO.write(page, outputFormatName, new File(outputPath,(++index)+"."+outputFormatName));
 		}
 		
@@ -133,7 +145,7 @@ public final class Framework {
 
 	}
 	
-	private final static String getProgramFolder(){
+	private static final String getProgramFolder(){
 		final String classPath=System.getProperty("java.class.path");
 		final int index=classPath.lastIndexOf(File.separatorChar);
 		if(index==-1)
@@ -141,7 +153,7 @@ public final class Framework {
 		return classPath.substring(0, index+1);
 	}
 	
-	private final static void giveHints(){
+	private static final void giveHints(){
 		System.out.print("\n"
 				+ "LittleFinger[版本："+VERSION+"]\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
@@ -155,97 +167,4 @@ public final class Framework {
 				+ "\n");
 	}
 	
-	private final static void preprocess(StringBuilder text){
-		for(int i=0; i<text.length(); ++i){
-			switch(text.charAt(i)){
-			case '（':
-				text.setCharAt(i, '('); break;
-			case '）':
-				text.setCharAt(i, ')'); break;
-			case '【':
-				text.setCharAt(i, '['); break;
-			case '】':
-				text.setCharAt(i, ']'); break;
-			case '，':
-				text.setCharAt(i, ','); break;
-			case '！':
-				text.setCharAt(i, '!'); break;
-			case '？':
-				text.setCharAt(i, '?'); break;
-			case '“':
-			case '”':
-				text.setCharAt(i, '"'); break;
-			case '‘':
-			case '’':
-				text.setCharAt(i, '\''); break;
-			case '：':
-				text.setCharAt(i, ':'); break;
-			case '；':
-				text.setCharAt(i, ';'); break;
-			}
-		}
-	}
-	
-	private final static boolean isHalfChar(final char c){
-		//所有英文字母和阿拉伯数字
-		if(c>='0' && c<='9') return true;
-		if(c>='a' && c<='z') return true;
-		if(c>='A' && c<='Z') return true;
-		if(c>='α' && c<='ω') return true;
-		if(c>='Α' && c<='Ω') return true;
-		//英文标点
-		switch(c){
-		case ' ':
-		case '~':
-		case '`':
-		case '!':
-		case '@':
-		case '#':
-		case '$': case '￥':
-		case '%':
-		case '^':
-		case '&':
-		case '(': case ')':
-		case '+': case '-': case '*': case '/':
-		case '_':
-		case '=':
-		case '[': case ']':
-		case '{': case '}':
-		case '|':
-		case '\\':
-		case ':':
-		case ';':
-		case '"':
-		case '\'':
-		case '<': case '>':
-		case ',':
-		case '.':
-		case '?':
-		case '°': case '′': case '″':
-		case '·': case '、': case '。':
-			return true;
-		}
-		return false;
-	}
-	
-	private final static boolean isEndChar(final char c){
-		switch(c){
-		case ',':
-		case ';':
-		case '.':
-		case '。':
-		case ')':
-		case ']':
-		case '}':
-		case '>':
-		case '》':
-		case '!':
-		case '?':
-		case '、':
-		case '°': case '′': case '″':
-		case '℃': case '℉':
-			return true;		
-		}
-		return false;
-	}
 }
