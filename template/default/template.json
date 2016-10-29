@@ -13,39 +13,44 @@
 "fontFamily" : "Senty Cream Puff 新蒂泡芙体",
 
 #字体颜色(区间[0,255]内的整数)
-"rgb" : "[100,100,100]",
+"rgb" : [100,100,100],
 
 #使用粗体(true\false)
 "useBold" : "false",
 
 #纸张上侧留白（像素）
-"topMargin" : "0",
+"topMargin" : 0,
 
 #纸张下侧留白（像素）
-"bottomMargin" : "100",
+"bottomMargin" : 100,
 
 #纸张左侧留白（像素）
-"leftMargin" : "0",
+"leftMargin" : 0,
 
 #纸张右侧留白（像素）
-"rightMargin" : "60",
+"rightMargin" : 60,
 
 #字体大小（正整数）
-"fontSize" : "30",
+"fontSize" : 30,
 
 #字体间距（像素）
-"wordSpace" : "0",
+"wordSpace" : 0,
 
 #行间距（像素）
-"lineSpace" : "20",
+"lineSpace" : 20,
 
 #字体大小正态分布标准差
-"fontSizedeviation" : "1",
+"fontSizedeviation" : 1,
 
 #字体间距正态分布标准差
-"wordSpacedeviation" : "1",
+"wordSpacedeviation" : 1,
 
 #行间距正态分布标准差
-"lineSpacedeviation" : "1"
+"lineSpacedeviation" : 1,
 
+"halfChars" : "[a-z0-9A-Z]",
+
+"endChars" : "[.]",
+
+"swapMap" : {"（":"(", "）":")"}
 }

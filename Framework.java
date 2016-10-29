@@ -18,16 +18,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
+import java.lang.reflect.Type;
+
 import javax.imageio.ImageIO;
 
-import java.util.Properties;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 
 import com.google.gson.*;
+import com.google.gson.reflect.*;
 
 public final class Framework {
 	private static final String VERSION="1.1";
@@ -52,8 +57,6 @@ public final class Framework {
 		JsonObject conf=jsonParser.parse(inputConf).getAsJsonObject();
 		inputConf.close();
 		
-		Gson gson = new Gson();
-		
 		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
 		final String    outputFormatName   = conf.get("outputFormatName").getAsString();
 		final String    fontFamily         = conf.get("fontFamily").getAsString(); 
@@ -69,8 +72,12 @@ public final class Framework {
 		final double    fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
 		final double    wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
 		final double    lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
-		final char[]    halfChars          = gson.fromJson(conf.get("halfChars"), char[].class);
-		final char[]    endChars           = gson.fromJson(conf.get("endChars"), char[].class);
+		final Pattern   halfChars          = Pattern.compile(conf.get("halfChars").getAsString());
+		final Pattern   endChars           = Pattern.compile(conf.get("endChars").getAsString());
+		
+		Gson gson=new Gson();
+		final Type type = new TypeToken<Map<String, String>>(){}.getType();
+		final Map<Character, Character> swapMap = gson.fromJson(conf.get("swapMap"), type);
 		
 		final Color color=new Color(rgb.get(0).getAsInt(),
 				rgb.get(1).getAsInt(),
@@ -92,12 +99,16 @@ public final class Framework {
 				new InputStreamReader(new FileInputStream(textPath),"UTF-8"));
 		StringBuilder text=new StringBuilder();
 		String line;
-		while((line=inputText.readLine()) != null){
-			text.append(line).append('\n');
-		}		
+		while((line=inputText.readLine()) != null)
+			text.append(line).append('\n');	
 		inputText.close();
 		
-		preprocess(text);
+		//对字符序列进行预处理
+		for(int i=0; i<text.length(); ++i){
+			char c=text.charAt(i);
+			if(swapMap.containsKey(c))
+				text.setCharAt(i, swapMap.get(c));
+		}
 		
 		final Font font=new Font(fontFamily,useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
@@ -115,8 +126,8 @@ public final class Framework {
 				fontSizedeviation,
 				wordSpacedeviation,
 				lineSpacedeviation,
-				Framework::isHalfChar,
-				Framework::isEndChar);
+				(c)->halfChars.matcher(c.toString()).matches(),
+				(c)->endChars.matcher(c.toString()).matches());
 		
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
@@ -156,97 +167,4 @@ public final class Framework {
 				+ "\n");
 	}
 	
-	private static final void preprocess(StringBuilder text){
-		for(int i=0; i<text.length(); ++i){
-			switch(text.charAt(i)){
-			case '（':
-				text.setCharAt(i, '('); break;
-			case '）':
-				text.setCharAt(i, ')'); break;
-			case '【':
-				text.setCharAt(i, '['); break;
-			case '】':
-				text.setCharAt(i, ']'); break;
-			case '，':
-				text.setCharAt(i, ','); break;
-			case '！':
-				text.setCharAt(i, '!'); break;
-			case '？':
-				text.setCharAt(i, '?'); break;
-			case '“':
-			case '”':
-				text.setCharAt(i, '"'); break;
-			case '‘':
-			case '’':
-				text.setCharAt(i, '\''); break;
-			case '：':
-				text.setCharAt(i, ':'); break;
-			case '；':
-				text.setCharAt(i, ';'); break;
-			}
-		}
-	}
-	
-	private static final boolean isHalfChar(final char c){
-		//所有英文字母和阿拉伯数字
-		if(c>='0' && c<='9') return true;
-		if(c>='a' && c<='z') return true;
-		if(c>='A' && c<='Z') return true;
-		if(c>='α' && c<='ω') return true;
-		if(c>='Α' && c<='Ω') return true;
-		//英文标点
-		switch(c){
-		case ' ':
-		case '~':
-		case '`':
-		case '!':
-		case '@':
-		case '#':
-		case '$': case '￥':
-		case '%':
-		case '^':
-		case '&':
-		case '(': case ')':
-		case '+': case '-': case '*': case '/':
-		case '_':
-		case '=':
-		case '[': case ']':
-		case '{': case '}':
-		case '|':
-		case '\\':
-		case ':':
-		case ';':
-		case '"':
-		case '\'':
-		case '<': case '>':
-		case ',':
-		case '.':
-		case '?':
-		case '°': case '′': case '″':
-		case '·': case '、': case '。':
-			return true;
-		}
-		return false;
-	}
-	
-	private static final boolean isEndChar(final char c){
-		switch(c){
-		case ',':
-		case ';':
-		case '.':
-		case '。':
-		case ')':
-		case ']':
-		case '}':
-		case '>':
-		case '》':
-		case '!':
-		case '?':
-		case '、':
-		case '°': case '′': case '″':
-		case '℃': case '℉':
-			return true;		
-		}
-		return false;
-	}
 }
