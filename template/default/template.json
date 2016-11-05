@@ -48,9 +48,9 @@
 #行间距正态分布标准差
 "lineSpacedeviation" : 1,
 
-"halfChars" : "[a-z0-9A-Z]",
+"halfChars" : "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ~`!@#$%^&*()_+-/=[]{}|\\:;\"'<>,.?°′″·、。￥",
 
-"endChars" : "[.]",
+"endChars" : ",;.)]}>!?°′″℃℉。》、",
 
-"swapMap" : {"（":"(", "）":")"}
+"swapMap" : {"（":"(", "）":")", "【":"[", "】":"]", "，":",", "！":"!", "？":"?", "“":"\"", "”":"\"", "‘":"'", "’":"'", "：":":", "；":";"}
 }
