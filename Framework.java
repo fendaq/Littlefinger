@@ -25,7 +25,6 @@ import javax.imageio.ImageIO;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -45,16 +44,16 @@ public final class Framework {
 			giveHints();
 			return;
 		}
+		
 		final String programFolder=getProgramFolder();
 		final String templatePath=programFolder+"template"+File.separator+args[0];
 		final String textPath=args[1];
 		final String outputPath=args[2];		
 		final String templatePropPath=templatePath+File.separator+"template.json";
 		
-		JsonParser jsonParser=new JsonParser();		
 		BufferedReader inputConf=new BufferedReader(
 				new InputStreamReader(new FileInputStream(templatePropPath),"UTF-8"));
-		JsonObject conf=jsonParser.parse(inputConf).getAsJsonObject();
+		JsonObject conf=new JsonParser().parse(inputConf).getAsJsonObject();
 		inputConf.close();
 		
 		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
@@ -72,8 +71,8 @@ public final class Framework {
 		final double    fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
 		final double    wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
 		final double    lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
-		final Pattern   halfChars          = Pattern.compile(conf.get("halfChars").getAsString());
-		final Pattern   endChars           = Pattern.compile(conf.get("endChars").getAsString());
+		final String    halfChars          = conf.get("halfChars").getAsString();
+		final String    endChars           = conf.get("endChars").getAsString();
 		
 		Gson gson=new Gson();
 		final Type type = new TypeToken<Map<String, String>>(){}.getType();
@@ -126,8 +125,8 @@ public final class Framework {
 				fontSizedeviation,
 				wordSpacedeviation,
 				lineSpacedeviation,
-				(c)->halfChars.matcher(c.toString()).matches(),
-				(c)->endChars.matcher(c.toString()).matches());
+				(c)->halfChars.contains(c.toString()),
+				(c)->endChars.contains(c.toString()));
 		
 		final File outputFile=new File(outputPath);
 		outputFile.mkdirs();
@@ -135,7 +134,7 @@ public final class Framework {
 		for(BufferedImage page : article){
 			ImageIO.write(page, outputFormatName, new File(outputPath,(++index)+"."+outputFormatName));
 		}
-		
+	
 		final long endTime=System.currentTimeMillis();
 		System.out.print("文本文件（"+textPath+"）处理结果：\n"
 				+ "耗时："+(endTime-beginTime)+"ms\n"
