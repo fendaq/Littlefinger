@@ -1,0 +1,59 @@
+{
+#--LittleFinger--
+#default 模板配置文件
+#注:配置文件与待处理文本文件均需用UTF-8格式编码。
+
+#背景图片文件名（该图片须与此配置文件同文件）
+"backgroundFileName" : "background.png",
+
+#输出图片格式
+"outputFormatName" : "png",
+
+#字体(须为系统字库中存在的字体)
+"fontFamily" : "Senty Cream Puff 新蒂泡芙体",
+
+#字体颜色(区间[0,255]内的整数)
+"rgb" : [0,200,0],
+
+#使用粗体(true\false)
+"useBold" : "false",
+
+#纸张上侧留白（像素）
+"topMargin" : 0,
+
+#纸张下侧留白（像素）
+"bottomMargin" : 100,
+
+#纸张左侧留白（像素）
+"leftMargin" : 0,
+
+#纸张右侧留白（像素）
+"rightMargin" : 60,
+
+#字体大小（正整数）
+"fontSize" : 30,
+
+#字体间距（像素）
+"wordSpace" : 0,
+
+#行间距（像素）
+"lineSpace" : 20,
+
+#字体大小正态分布标准差
+"fontSizedeviation" : 1,
+
+#字体间距正态分布标准差
+"wordSpacedeviation" : 1,
+
+#行间距正态分布标准差
+"lineSpacedeviation" : 1,
+
+#以下字符所占用空间将改为正常空间的一半
+"halfChars" : "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ~`!@#$%^&*()_+-/=[]{}|\\:;\"'<>,.?°′″·、。￥",
+
+#结尾字符（以下字符在本应换行时不会换行打印而会强制打印到行尾）
+"endChars" : ",;.)]}>!?°′″℃℉。》、",
+
+#字符替换（key替换为value）
+"swapMap" : {"（":"(", "）":")", "【":"[", "】":"]", "，":",", "！":"!", "？":"?", "“":"\"", "”":"\"", "‘":"'", "’":"'", "：":":", "；":";"}
+}

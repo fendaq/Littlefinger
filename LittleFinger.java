@@ -27,7 +27,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public final class LittleFinger {
-
+	
 	//write方法尽量模仿在人类(特别是本人)手写时的字与字之间的关系.
 	//1.斜体与非斜体使用均匀概率分布.
 	//2.字体大小,字体间距与行间距使用正态分布.
@@ -39,10 +39,10 @@ public final class LittleFinger {
 	//2.英文单词在遇到此程序自动换行时可能会导致单词分成上下两段。
 	//注:
 	//1.由于字体间距,行间距和各页边距均为整型;故为了充分体现出随机性,背景图片像素应足够大,上述各值也须相应增大；
-	//2.在多线程情形下,应考虑改写代码,为每个线程创建独立的随机数生成引擎（ThreadLocalRandom）；
-	//3.形参font并非算法中实际运用的字体，而仅仅是有关字体信息（字型、是否使用粗体和字体大小）的封装，所以font的style只能是BOLD或PLAIN；
-	//4.字体的坐标为字体左下角顶点的坐标。
-	public final static LinkedList<BufferedImage> write(
+	//2.形参font并非算法中实际运用的字体，而仅仅是有关字体信息（字型、是否使用粗体和字体大小）的封装，所以font的style只能是BOLD或PLAIN；
+	//3.字体的坐标为字体左下角顶点的坐标；
+	//4.使用此算法时需要传入两个可调用对象isHalfChar和isEndChar对字符进行判断。
+	public static final LinkedList<BufferedImage> write(
 			final BufferedImage background,
 			final CharSequence text,
 			final Font font,
@@ -114,7 +114,7 @@ public final class LittleFinger {
 		return article;
 	}
 	
-	private final static BufferedImage deepCopy(final BufferedImage origin) {
+	private static final BufferedImage deepCopy(final BufferedImage origin) {
 	    BufferedImage clone = new BufferedImage(origin.getWidth(),
 	            origin.getHeight(), 
 	            origin.getType());
