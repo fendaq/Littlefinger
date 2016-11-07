@@ -34,7 +34,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 
 public final class Framework {
-	private static final String VERSION="1.1";
+	private static final String VERSION="1.2";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {

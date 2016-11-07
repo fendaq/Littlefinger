@@ -27,7 +27,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public final class LittleFinger {
-	//TODO:debug:字体颜色与color不一致。
 	
 	//write方法尽量模仿在人类(特别是本人)手写时的字与字之间的关系.
 	//1.斜体与非斜体使用均匀概率分布.
