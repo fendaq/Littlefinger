@@ -19,19 +19,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-import java.lang.reflect.Type;
-
 import javax.imageio.ImageIO;
 
 import java.util.List;
-import java.util.Map;
 
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 
 import com.google.gson.*;
-import com.google.gson.reflect.*;
 
 public final class Framework {
 	private static final String VERSION="1.2";
@@ -56,29 +52,27 @@ public final class Framework {
 		JsonObject conf=new JsonParser().parse(inputConf).getAsJsonObject();
 		inputConf.close();
 		
-		final String    backgroundFileName = conf.get("backgroundFileName").getAsString();
-		final String    outputFormatName   = conf.get("outputFormatName").getAsString();
-		final String    fontFamily         = conf.get("fontFamily").getAsString(); 
-		final JsonArray rgb                = conf.get("rgb").getAsJsonArray();
-		final boolean   useBold            = conf.get("useBold").getAsBoolean();
-		final int       topMargin          = conf.get("topMargin").getAsInt();
-		final int       bottomMargin       = conf.get("bottomMargin").getAsInt();
-		final int       leftMargin         = conf.get("leftMargin").getAsInt();
-		final int       rightMargin        = conf.get("rightMargin").getAsInt();
-		final int       fontSize           = conf.get("fontSize").getAsInt();
-		final int       wordSpace          = conf.get("wordSpace").getAsInt();
-		final int       lineSpace          = conf.get("lineSpace").getAsInt();
-		final double    fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
-		final double    wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
-		final double    lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
-		final String    halfChars          = conf.get("halfChars").getAsString();
-		final String    endChars           = conf.get("endChars").getAsString();
+		final String     backgroundFileName = conf.get("backgroundFileName").getAsString();
+		final String     outputFormatName   = conf.get("outputFormatName").getAsString();
+		final String     fontFamily         = conf.get("fontFamily").getAsString(); 
+		final JsonArray  rgb                = conf.get("rgb").getAsJsonArray();
+		final boolean    useBold            = conf.get("useBold").getAsBoolean();
+		final int        topMargin          = conf.get("topMargin").getAsInt();
+		final int        bottomMargin       = conf.get("bottomMargin").getAsInt();
+		final int        leftMargin         = conf.get("leftMargin").getAsInt();
+		final int        rightMargin        = conf.get("rightMargin").getAsInt();
+		final int        fontSize           = conf.get("fontSize").getAsInt();
+		final int        wordSpace          = conf.get("wordSpace").getAsInt();
+		final int        lineSpace          = conf.get("lineSpace").getAsInt();
+		final double     fontSizedeviation  = conf.get("fontSizedeviation").getAsDouble();
+		final double     wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
+		final double     lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
+		final String     halfChars          = conf.get("halfChars").getAsString();
+		final String     endChars           = conf.get("endChars").getAsString();
+		final JsonObject swapMap            = conf.get("swapMap").getAsJsonObject();
 		
-		Gson gson=new Gson();
-		final Type type = new TypeToken<Map<String, String>>(){}.getType();
-		final Map<Character, Character> swapMap = gson.fromJson(conf.get("swapMap"), type);
-		
-		final Color color=new Color(rgb.get(0).getAsInt(),
+		final Color color=new Color(
+				rgb.get(0).getAsInt(),
 				rgb.get(1).getAsInt(),
 				rgb.get(2).getAsInt());
 
@@ -103,13 +97,13 @@ public final class Framework {
 		inputText.close();
 		
 		//对字符序列进行预处理
-		for(int i=0; i<text.length(); ++i){
-			char c=text.charAt(i);
-			if(swapMap.containsKey(c))
-				text.setCharAt(i, swapMap.get(c));
+		for(int i=0; i!=text.length(); ++i){
+			final String c=String.valueOf(text.charAt(i));
+			if(swapMap.has(c))
+				text.setCharAt(i, swapMap.get(c).getAsCharacter());
 		}
 		
-		final Font font=new Font(fontFamily,useBold ? Font.BOLD : Font.PLAIN, fontSize);
+		final Font font=new Font(fontFamily, useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
 		final List<BufferedImage> article=LittleFinger.write(
 				background,
