@@ -42,7 +42,7 @@ public final class LittleFinger {
 	//2.形参font并非算法中实际运用的字体，而仅仅是有关字体信息（字型、是否使用粗体和字体大小）的封装，所以font的style只能是BOLD或PLAIN；
 	//3.字体的坐标为字体左下角顶点的坐标；
 	//4.使用此算法时需要传入两个可调用对象isHalfChar和isEndChar对字符进行判断。
-	public static final LinkedList<BufferedImage> write(
+	public static final LinkedList<BufferedImage> handwrite(
 			final BufferedImage background,
 			final CharSequence text,
 			final Font font,

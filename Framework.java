@@ -105,7 +105,7 @@ public final class Framework {
 		
 		final Font font=new Font(fontFamily, useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
-		final List<BufferedImage> article=LittleFinger.write(
+		final List<BufferedImage> article=LittleFinger.handwrite(
 				background,
 				text,
 				font,
