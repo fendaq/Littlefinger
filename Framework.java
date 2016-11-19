@@ -30,7 +30,7 @@ import java.awt.Font;
 import com.google.gson.*;
 
 public final class Framework {
-	private static final String VERSION="1.2";
+	private static final String VERSION="1.3";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
