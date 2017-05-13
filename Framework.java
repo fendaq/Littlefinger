@@ -1,4 +1,4 @@
-//LittleFinger£ºÒ»¿î½«µç×ÓÎÄ±¾×ª»¯ÎªÖĞÎÄÊÖĞ´±Ê¼£Í¼Æ¬µÄ¿ªÔ´Ãâ·ÑÈí¼ş¡£
+//LittleFingerï¼šä¸€æ¬¾å°†ç”µå­æ–‡æœ¬è½¬åŒ–ä¸ºä¸­æ–‡æ‰‹å†™ç¬”è¿¹å›¾ç‰‡çš„å¼€æºå…è´¹è½¯ä»¶ã€‚
 //Copyright (C) 2016  Gsllchb <Gsllchb@icloud.com>
 //
 //This program is free software: you can redistribute it and/or modify
@@ -80,11 +80,11 @@ public final class Framework {
 	    		new File(templatePath+File.separator+backgroundFileName));  
 	    
 		if((topMargin+bottomMargin+fontSize) >= background.getHeight()){
-	    	System.out.print("topMargin,bottomMarginÓëfontSizeÖ®ºÍĞëĞ¡ÓÚ±³¾°Í¼¸ß¶È!\n");
+	    	System.out.print("topMargin,bottomMarginä¸fontSizeä¹‹å’Œé¡»å°äºèƒŒæ™¯å›¾é«˜åº¦!\n");
 	    	return;
 	    }
 	    if((leftMargin+rightMargin+fontSize) >= background.getWidth()){
-	    	System.out.print("leftMargin,rightMarginÓëfontSizeÖ®ºÍĞëĞ¡ÓÚ±³¾°Í¼¿í¶È!\n");
+	    	System.out.print("leftMargin,rightMarginä¸fontSizeä¹‹å’Œé¡»å°äºèƒŒæ™¯å›¾å®½åº¦!\n");
 	    	return;
 	    }
 	    
@@ -96,7 +96,7 @@ public final class Framework {
 			text.append(line).append('\n');	
 		inputText.close();
 		
-		//¶Ô×Ö·ûĞòÁĞ½øĞĞÔ¤´¦Àí
+		//å¯¹å­—ç¬¦åºåˆ—è¿›è¡Œé¢„å¤„ç†
 		for(int i=0; i!=text.length(); ++i){
 			final String c=String.valueOf(text.charAt(i));
 			if(swapMap.has(c))
@@ -130,10 +130,10 @@ public final class Framework {
 		}
 	
 		final long endTime=System.currentTimeMillis();
-		System.out.print("ÎÄ±¾ÎÄ¼ş£¨"+textPath+"£©´¦Àí½á¹û£º\n"
-				+ "ºÄÊ±£º"+(endTime-beginTime)+"ms\n"
-				+ "Éú³ÉÍ¼Æ¬£¨¸ñÊ½£º"+outputFormatName+"£©£º"+index+"ÕÅ\n"
-				+ "Êä³öÎÄ¼ş¼Ğ:"+outputPath+"\n");
+		System.out.print("æ–‡æœ¬æ–‡ä»¶ï¼ˆ"+textPath+"ï¼‰å¤„ç†ç»“æœï¼š\n"
+				+ "è€—æ—¶ï¼š"+(endTime-beginTime)+"ms\n"
+				+ "ç”Ÿæˆå›¾ç‰‡ï¼ˆæ ¼å¼ï¼š"+outputFormatName+"ï¼‰ï¼š"+index+"å¼ \n"
+				+ "è¾“å‡ºæ–‡ä»¶å¤¹:"+outputPath+"\n");
 
 
 	}
@@ -148,15 +148,15 @@ public final class Framework {
 	
 	private static final void giveHints(){
 		System.out.print("\n"
-				+ "LittleFinger[°æ±¾£º"+VERSION+"]\n"
-				+ "Ò»¿î½«µç×ÓÎÄ±¾×ª»¯ÎªÖĞÎÄÊÖĞ´±Ê¼£µÄÍ¼Æ¬µÄ¿ªÔ´Ãâ·ÑÈí¼ş¡£\n"
+				+ "LittleFinger[ç‰ˆæœ¬ï¼š"+VERSION+"]\n"
+				+ "ä¸€æ¬¾å°†ç”µå­æ–‡æœ¬è½¬åŒ–ä¸ºä¸­æ–‡æ‰‹å†™ç¬”è¿¹çš„å›¾ç‰‡çš„å¼€æºå…è´¹è½¯ä»¶ã€‚\n"
 				+ "\n"
-				+ "ÓÃ·¨£ºLittleFinger.jar template textPath outputPath\n"
-				+ "\ttemplate\tÄ£°åÃû³Æ\n"
-				+ "\ttextPath\t´ı´¦ÀíÎÄ±¾ÎÄ¼şÂ·¾¶\n"
-				+ "\toutputPath\tÉú³ÉÍ¼Æ¬Êä³öÂ·¾¶\n"
+				+ "ç”¨æ³•ï¼šLittleFinger.jar template textPath outputPath\n"
+				+ "\ttemplate\tæ¨¡æ¿åç§°\n"
+				+ "\ttextPath\tå¾…å¤„ç†æ–‡æœ¬æ–‡ä»¶è·¯å¾„\n"
+				+ "\toutputPath\tç”Ÿæˆå›¾ç‰‡è¾“å‡ºè·¯å¾„\n"
 				+ "\n"
-				+ "¸ü¶àĞÅÏ¢£ºhttps://github.com/Gsllchb/LittleFinger\n"
+				+ "æ›´å¤šä¿¡æ¯ï¼šhttps://github.com/Gsllchb/LittleFinger\n"
 				+ "\n");
 	}
 	
