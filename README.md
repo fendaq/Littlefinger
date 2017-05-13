@@ -8,10 +8,10 @@ LittleFinger，一款将电子文本转化为中文手写笔迹的图片的开�
 * LittleFinger.jar<br>
 * template
 	* default<br>
-		* template.properties<br>
+		* template.json<br>
 		* background.png<br>
 	* template1<br>
-		* template.properties<br>
+		* template.json<br>
 		* background.jpg<br>
 
 ****************************************<br>
