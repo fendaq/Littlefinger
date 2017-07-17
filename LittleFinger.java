@@ -17,7 +17,6 @@
 //核心算法及其所调用的函数.
 
 import java.util.LinkedList;
-
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -57,54 +56,54 @@ public final class LittleFinger {
 			final double wordSpacedeviation,
 			final double lineSpacedeviation,
 			final Predicate<Character> isHalfChar,
-			final Predicate<Character> isEndChar){
+			final Predicate<Character> isEndChar) {
 		
-		Random random=new Random();
-		final int fontSize=font.getSize();	
-		final int fontStyle=font.getStyle();
-		final int length=text.length();
-		LinkedList<BufferedImage> article=new LinkedList<BufferedImage>();
+		Random random = new Random();
+		final int fontSize = font.getSize();	
+		final int fontStyle = font.getStyle();
+		final int length = text.length();
+		LinkedList<BufferedImage> article = new LinkedList<BufferedImage>();
 		
-		for(int i=0; i!=length; ){
-			BufferedImage page=deepCopy(background);
-			Graphics2D context=page.createGraphics();
+		for (int i = 0; i != length; ) {
+			BufferedImage page = deepCopy(background);
+			Graphics2D context = page.createGraphics();
 			context.setColor(color);
 			
-			for(int y=topMargin+fontSize;
-				y<page.getHeight()-bottomMargin && i!=length;
-				y+=lineSpace){
+			for (int y = topMargin + fontSize; 
+					y < page.getHeight() - bottomMargin && i != length; 
+					y += lineSpace) {
 				
-				for(int x=leftMargin,realFontSize; ;){			
-					final char word=text.charAt(i);
+				for (int x = leftMargin, realFontSize; ; ) {			
+					final char word = text.charAt(i);
 					
-					if(i==length){
+					if (i == length) {
 						break;
 					//解决换行符恰好在行末时换行会多换一行的问题。
-					}else if(x>=page.getWidth()-rightMargin-fontSize && word=='\n'){
+					} else if (x >= page.getWidth() - rightMargin - fontSize && word == '\n') {
 						++i;
 						break;
 					//解决句号和逗号等一般不能放于行首的字符在自动换行时，写于行首。
-					}else if(x>=page.getWidth()-rightMargin-fontSize && !isEndChar.test(word)){
+					} else if (x >= page.getWidth() - rightMargin - fontSize && !isEndChar.test(word)) {
 						break;
-					}else if(word=='\n'){
+					} else if (word == '\n') {
 						++i;
 						break;
 					}		
 					
-					realFontSize=fontSize+(int)(fontSizedeviation*random.nextGaussian());
+					realFontSize = fontSize + (int)(fontSizedeviation * random.nextGaussian());
 					//斜体的概率为0.5
-					context.setFont(font.deriveFont( 
-									random.nextDouble()<0.5 ? fontStyle : fontStyle|Font.ITALIC, 
-									realFontSize));
+					context.setFont(font.deriveFont(
+							random.nextDouble() < 0.5 ? fontStyle : fontStyle | Font.ITALIC,
+							realFontSize));
 
 					context.drawString(String.valueOf(word), 
 							x,
-							y+(int)(lineSpacedeviation*random.nextGaussian()));
+							y + (int)(lineSpacedeviation * random.nextGaussian()));
 					++i;
 					
-					x+=realFontSize
-						+wordSpace+(int)(wordSpacedeviation*random.nextGaussian())
-						-(isHalfChar.test(text.charAt(i-1)) ? fontSize/2 : 0);		
+					x += realFontSize
+						 + wordSpace+(int)(wordSpacedeviation * random.nextGaussian())
+						 - (isHalfChar.test(text.charAt(i - 1)) ? fontSize / 2 : 0);		
 				}
 			}
 			context.dispose();
