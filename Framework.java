@@ -32,7 +32,7 @@ public final class Framework {
 	public static void main(String[] args) throws Exception {
 		final long beginTime=System.currentTimeMillis();
 		
-		if(args.length != 3){
+		if (args.length != 3) {
 			giveHints();
 			return;
 		}
@@ -43,7 +43,7 @@ public final class Framework {
 		final String outputPath = args[2];		
 		final String templatePropPath = templatePath + File.separator + "template.json";
 		
-		BufferedReader inputConf=new BufferedReader(
+		BufferedReader inputConf = new BufferedReader(
 				new InputStreamReader(new FileInputStream(templatePropPath), "UTF-8"));
 		JsonObject conf=new JsonParser().parse(inputConf).getAsJsonObject();
 		inputConf.close();
@@ -75,11 +75,11 @@ public final class Framework {
 	    final BufferedImage background = ImageIO.read(
 	    		new File(templatePath + File.separator + backgroundFileName));  
 	    
-		if((topMargin + bottomMargin + fontSize) >= background.getHeight()){
+		if ((topMargin + bottomMargin + fontSize) >= background.getHeight()) {
 	    	System.out.print("topMargin,bottomMargin与fontSize之和须小于背景图高度!\n");
 	    	return;
 	    }
-	    if((leftMargin + rightMargin + fontSize) >= background.getWidth()){
+	    if ((leftMargin + rightMargin + fontSize) >= background.getWidth()) {
 	    	System.out.print("leftMargin,rightMargin与fontSize之和须小于背景图宽度!\n");
 	    	return;
 	    }
@@ -88,12 +88,13 @@ public final class Framework {
 				new InputStreamReader(new FileInputStream(textPath), "UTF-8"));
 		StringBuilder text = new StringBuilder();
 		String line;
-		while((line = inputText.readLine()) != null)
-			text.append(line).append('\n');	
+		while ((line = inputText.readLine()) != null) {
+			text.append(line).append('\n');
+		}
 		inputText.close();
 		
 		//对字符序列进行预处理
-		for(int i = 0; i != text.length(); ++i){
+		for (int i = 0; i != text.length(); ++i) {
 			final String c = String.valueOf(text.charAt(i));
 			if(swapMap.has(c))
 				text.setCharAt(i, swapMap.get(c).getAsCharacter());
@@ -132,15 +133,16 @@ public final class Framework {
 				+ "输出文件夹:" + outputPath + "\n");
 	}
 	
-	private static final String getProgramFolder(){
+	private static final String getProgramFolder() {
 		final String classPath = System.getProperty("java.class.path");
 		final int index = classPath.lastIndexOf(File.separatorChar);
-		if(index == -1)
+		if (index == -1) {
 			return "";
+		}
 		return classPath.substring(0, index + 1);
 	}
 	
-	private static final void giveHints(){
+	private static final void giveHints() {
 		System.out.print(
 				"LittleFinger " + VERSION + " Copyright (C) 2016-2017 Gsllchb\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
