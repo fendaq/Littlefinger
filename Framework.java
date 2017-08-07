@@ -147,7 +147,7 @@ public final class Framework {
 				"LittleFinger " + VERSION + " Copyright (C) 2016-2017 Gsllchb\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
 				+ "\n"
-				+ "用法：java [-options] -jar LittleFinger.jar template textPath outputPath\n"
+				+ "用法：java [-options] -jar littlefinger.jar template textPath outputPath\n"
 				+ "\ttemplate\t模板名称\n"
 				+ "\ttextPath\t待处理文本文件路径\n"
 				+ "\toutputPath\t生成图片输出路径\n"
