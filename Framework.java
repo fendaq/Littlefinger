@@ -45,7 +45,7 @@ public final class Framework {
 		
 		BufferedReader inputConf = new BufferedReader(
 				new InputStreamReader(new FileInputStream(templatePropPath), "UTF-8"));
-		JsonObject conf=new JsonParser().parse(inputConf).getAsJsonObject();
+		JsonObject conf = new JsonParser().parse(inputConf).getAsJsonObject();
 		inputConf.close();
 		
 		final String backgroundFileName = conf.get("backgroundFileName").getAsString();
@@ -102,7 +102,7 @@ public final class Framework {
 		
 		final Font font = new Font(fontFamily, useBold ? Font.BOLD : Font.PLAIN, fontSize);
 		
-		final List<BufferedImage> article=LittleFinger.handwrite(
+		final List<BufferedImage> article = LittleFinger.handwrite(
 				background,
 				text,
 				font,
@@ -143,7 +143,7 @@ public final class Framework {
 	}
 	
 	private static void giveHints() {
-		System.out.print(
+		System.out.println(
 				"LittleFinger " + VERSION + " Copyright (C) 2016-2017 Gsllchb\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
 				+ "\n"
