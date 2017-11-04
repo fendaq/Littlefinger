@@ -40,13 +40,13 @@
 "lineSpace" : 20,
 
 #字体大小正态分布标准差
-"fontSizedeviation" : 1,
+"fontSizeDeviation" : 1,
 
 #字体间距正态分布标准差
-"wordSpacedeviation" : 1,
+"wordSpaceDeviation" : 1,
 
 #行间距正态分布标准差
-"lineSpacedeviation" : 1,
+"lineSpaceDeviation" : 1,
 
 #以下字符所占用空间将改为正常空间的一半
 "halfChars" : "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ~`!@#$%^&*()_+-/=[]{}|\\:;\"'<>,.?°′″·、。￥",

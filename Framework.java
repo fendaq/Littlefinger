@@ -1,5 +1,5 @@
 //LittleFinger：一款将电子文本转化为中文手写笔迹图片的开源免费软件。
-//Copyright (C) 2016  Gsllchb <Gsllchb@icloud.com>
+//Copyright (C) 2016-2017  Gsllchb <Gsllchb@icloud.com>
 //
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -14,19 +14,19 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import com.google.gson.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import javax.imageio.ImageIO;
 import java.util.List;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.awt.Font;
-import com.google.gson.*;
+import javax.imageio.ImageIO;
 
 public final class Framework {
-	private static final String VERSION = "1.4";
+	private static final String VERSION = "1.5";
 	
 	 // @param args:template textPath outputPath
 	public static void main(String[] args) throws Exception {
@@ -60,9 +60,9 @@ public final class Framework {
 		final int fontSize = conf.get("fontSize").getAsInt();
 		final int wordSpace = conf.get("wordSpace").getAsInt();
 		final int lineSpace = conf.get("lineSpace").getAsInt();
-		final double fontSizedeviation = conf.get("fontSizedeviation").getAsDouble();
-		final double wordSpacedeviation = conf.get("wordSpacedeviation").getAsDouble();
-		final double lineSpacedeviation = conf.get("lineSpacedeviation").getAsDouble();
+		final double fontSizeDeviation = conf.get("fontSizeDeviation").getAsDouble();
+		final double wordSpaceDeviation = conf.get("wordSpaceDeviation").getAsDouble();
+		final double lineSpaceDeviation = conf.get("lineSpaceDeviation").getAsDouble();
 		final String halfChars = conf.get("halfChars").getAsString();
 		final String endChars = conf.get("endChars").getAsString();
 		final JsonObject swapMap = conf.get("swapMap").getAsJsonObject();
@@ -113,9 +113,9 @@ public final class Framework {
 				bottomMargin,
 				leftMargin,
 				rightMargin,
-				fontSizedeviation,
-				wordSpacedeviation,
-				lineSpacedeviation,
+				fontSizeDeviation,
+				wordSpaceDeviation,
+				lineSpaceDeviation,
 				(c) -> halfChars.contains(c.toString()),
 				(c) -> endChars.contains(c.toString()));
 		
@@ -133,7 +133,7 @@ public final class Framework {
 				+ "输出文件夹:" + outputPath + "\n");
 	}
 	
-	private static final String getProgramFolder() {
+	private static String getProgramFolder() {
 		final String classPath = System.getProperty("java.class.path");
 		final int index = classPath.lastIndexOf(File.separatorChar);
 		if (index == -1) {
@@ -142,7 +142,7 @@ public final class Framework {
 		return classPath.substring(0, index + 1);
 	}
 	
-	private static final void giveHints() {
+	private static void giveHints() {
 		System.out.print(
 				"LittleFinger " + VERSION + " Copyright (C) 2016-2017 Gsllchb\n"
 				+ "一款将电子文本转化为中文手写笔迹的图片的开源免费软件。\n"
