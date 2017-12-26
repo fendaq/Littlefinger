@@ -1,4 +1,6 @@
 # LittleFinger
+**该库已经停止开发和维护，请移步至[*PyLf*](https://github.com/Gsllchb/PyLf)。** <br>
+<br>
 一款将电子文本转化为中文手写笔迹的图片的开源免费软件。
 ## 安装
 下载解压[Releases](https://github.com/Gsllchb/LittleFinger/releases)。
